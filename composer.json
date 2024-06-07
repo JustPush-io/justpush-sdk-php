@@ -1,0 +1,28 @@
+{
+  "name": "justpush/justpush-php-sdk",
+  "description": "SDK To send push messages through PHP",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "version": "0.01",
+  "authors": [
+    {
+      "name": "JustPush.io",
+      "email": "info@justpush.io"
+    }
+  ],
+  "require": {
+    "guzzlehttp/guzzle": "^7.8",
+    "php": "^8.2",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "JustPush\\Resources\\": "src/Resources/",
+      "JustPush\\Base\\": "src/Base/"
+    }
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^3.57",
+    "phpunit/phpunit": "^11.1"
+  }
+}
