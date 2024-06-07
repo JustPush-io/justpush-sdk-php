@@ -3,7 +3,7 @@
   "description": "SDK To send push messages through PHP",
   "minimum-stability": "stable",
   "license": "proprietary",
-  "version": "0.01",
+  "version": "1.0.0",
   "authors": [
     {
       "name": "JustPush.io",
