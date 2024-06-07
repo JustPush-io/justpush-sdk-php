@@ -12,7 +12,7 @@ use RuntimeException;
 
 class JustPushTopic extends JustPushBase
 {
-    public const ENDPOINT = '/topic';
+    public const ENDPOINT = '/topics';
 
     /**
      * @var array|null

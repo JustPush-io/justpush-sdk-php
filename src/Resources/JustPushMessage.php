@@ -12,7 +12,7 @@ use Stringable;
 
 class JustPushMessage extends JustPushBase
 {
-    public const ENDPOINT = '/message';
+    public const ENDPOINT = '/messages';
 
     /**
      * The messageParams.

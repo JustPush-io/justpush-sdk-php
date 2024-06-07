@@ -1,0 +1,436 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "JustPush",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https:\/\/api.justpush.io"
+        }
+    ],
+    "paths": {
+        "\/messages": {
+            "post": {
+                "tags": [
+                    "Messages"
+                ],
+                "summary": "Create a message",
+                "description": "Create a message to the queue, ready to be processed",
+                "requestBody": {
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/Message"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "Message Create Body",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/MessageCreateError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "\/messages\/{messageKey}": {
+            "get": {
+                "tags": [
+                    "Messages"
+                ],
+                "summary": "Get a message",
+                "description": "Get a message based on the Key provided when the message got created.",
+                "parameters": [
+                    {
+                        "name": "messageKey",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Message Get Body",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/Message"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "\/topics\/{topicUuid}": {
+            "get": {
+                "tags": [
+                    "Topics"
+                ],
+                "summary": "Get a topic",
+                "description": "Get a topic based on the uuid.",
+                "parameters": [
+                    {
+                        "name": "topicUuid",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Topic Get Body",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/Topic"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Topics"
+                ],
+                "summary": "Update a topic",
+                "description": "Update an existing topic",
+                "parameters": [
+                    {
+                        "name": "topicUuid",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Topic Update Body",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/TopicUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "Error Response Body",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "\/topics": {
+            "post": {
+                "tags": [
+                    "Topics"
+                ],
+                "summary": "Create a Topic",
+                "description": "Create a Topic and assigns it to the user immediately",
+                "requestBody": {
+                    "description": "Message Create Body",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/TopicCreate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "Error Response Body",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "MessageCreateError": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "format": "boolean",
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "format": "string",
+                        "type": "string"
+                    }
+                }
+            },
+            "Error": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    },
+                    "code": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "Message": {
+                "type": "object",
+                "properties": {
+                    "topic": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "sound": {
+                        "type": "string"
+                    },
+                    "priority": {
+                        "type": "integer"
+                    },
+                    "expiry_ttl": {
+                        "type": "integer"
+                    },
+                    "requires_acknowledgement": {
+                        "type": "boolean"
+                    },
+                    "acknowledgement": {
+                        "type": "object",
+                        "properties": {
+                            "callback": {
+                                "type": "object",
+                                "properties": {
+                                    "required": {
+                                        "type": "boolean"
+                                    },
+                                    "url": {
+                                        "type": "string"
+                                    },
+                                    "params": {
+                                        "description": "JSON Formatted Params",
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "buttons": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "cta": {
+                                    "type": "string"
+                                },
+                                "url": {
+                                    "type": "string"
+                                },
+                                "action_required": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    },
+                    "buttons_groups": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "cta": {
+                                    "type": "string"
+                                },
+                                "action_required": {
+                                    "type": "string"
+                                },
+                                "buttons": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "cta": {
+                                                "type": "string"
+                                            },
+                                            "url": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "images": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "caption": {
+                                    "type": "string"
+                                },
+                                "url": {
+                                    "type": "string"
+                                },
+                                "body": {
+                                    "description": "A base64 respresentation of the image",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "MessageCreateResponse": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "boolean"
+                    },
+                    "key": {
+                        "description": "The key that can be used to retrieve the message information.",
+                        "type": "string"
+                    }
+                }
+            },
+            "TopicUpdateResponse": {
+                "type": "object",
+                "properties": {
+                    "uuid": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "avatar": {
+                        "type": "string"
+                    },
+                    "has_customer_avatar": {
+                        "type": "string"
+                    },
+                    "token": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Topic": {
+                "type": "object",
+                "properties": {
+                    "uuid": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "avatar": {
+                        "type": "string"
+                    },
+                    "has_customer_avatar": {
+                        "type": "string"
+                    },
+                    "token": {
+                        "type": "string"
+                    }
+                }
+            },
+            "TopicCreate": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    }
+                }
+            },
+            "TopicCreateResponse": {
+                "type": "object",
+                "properties": {
+                    "uuid": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "avatar": {
+                        "type": "string"
+                    },
+                    "has_customer_avatar": {
+                        "type": "string"
+                    },
+                    "token": {
+                        "type": "string"
+                    }
+                }
+            },
+            "TopicUpdateRequest": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "avatar": {
+                        "type": "object",
+                        "properties": {
+                            "external_url": {
+                                "type": "string"
+                            },
+                            "body": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "BearerToken": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "Token"
+            }
+        }
+    },
+    "security": [
+        {
+            "BearerToken": []
+        }
+    ]
+}
