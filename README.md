@@ -54,14 +54,14 @@ $response = JustPushMessage::token('REPLACE_WITH_USER_TOKEN')
 
 ### Defining the topic
 Our goals it to keep the API as simple as possible. Therefore, you can send either:
-- **Topic Title** - When the title exists more then once, the oldest topic will be used. If the name is not in your topic list, a new topic will be created. 
+- **Topic Title** - When the title exists more than once, the oldest topic will be used. If the name is not in your topic list, a new topic will be created. 
 - **Topic UUID** - Uses the exact match of the topic
 
 ### Sending multiple images
 When a message contains multiple images, the first image will be used for the push message banner. 
 
 ### Setting an Expiry
-When a expiry is set, the message will have an TTL in seconds. After the expiry, in seconds, has expired, the message will automatically be hidden.
+When an expiry is set, the message will have an TTL in seconds. After the expiry, in seconds, has expired, the message will automatically be hidden.
 
 # JustPush Topics
 

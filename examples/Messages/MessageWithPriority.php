@@ -6,7 +6,7 @@ use JustPush\Resources\JustPushMessage;
 
 require 'vendor/autoload.php';
 
-$response = JustPushMessage::token('IggUNJlmz3ULZvH0ur2UF2yR2UAws8jU')
+$response = JustPushMessage::token('REPLACE_WITH_API_TOKEN')
     ->message('Here is a sample Message')
     ->title('Test Title')
     ->lowPriority()

@@ -2,7 +2,7 @@
     "openapi": "3.0.2",
     "info": {
         "title": "JustPush",
-        "version": "1.0.0"
+        "version": "1.0.3"
     },
     "servers": [
         {
@@ -338,7 +338,7 @@
                     "avatar": {
                         "type": "string"
                     },
-                    "has_customer_avatar": {
+                    "has_custom_avatar": {
                         "type": "string"
                     },
                     "token": {
@@ -361,7 +361,7 @@
                     "avatar": {
                         "type": "string"
                     },
-                    "has_customer_avatar": {
+                    "has_custom_avatar": {
                         "type": "string"
                     },
                     "token": {
@@ -392,7 +392,7 @@
                     "avatar": {
                         "type": "string"
                     },
-                    "has_customer_avatar": {
+                    "has_custom_avatar": {
                         "type": "string"
                     },
                     "token": {
