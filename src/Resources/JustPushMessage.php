@@ -169,7 +169,7 @@ class JustPushMessage extends JustPushBase
      */
     public function sound(string $sound): static
     {
-        $this->messageParams['sounds'] = $sound;
+        $this->messageParams['sound'] = $sound;
 
         return $this;
     }
