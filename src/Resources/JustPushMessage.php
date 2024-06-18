@@ -268,12 +268,12 @@ class JustPushMessage extends JustPushBase
      */
     public function acknowledge(bool $requiresAcknowledgement, bool $callbackRequired = false, ?string $callbackUrl = null, ?array $callbackParams = null): static
     {
-        $this->messageParams['acknowledgement']['requires_acknowledgement'] = $requiresAcknowledgement;
+        $this->messageParams['requires_acknowledgement'] = $requiresAcknowledgement;
 
         if ($callbackRequired) {
-            $this->messageParams['acknowledgement']['callback_required'] = $callbackRequired;
-            $this->messageParams['acknowledgement']['callback_url']      = $callbackUrl;
-            $this->messageParams['acknowledgement']['callback_params']   = $callbackParams;
+            $this->messageParams['acknowledgement']['callback']['required'] = $callbackRequired;
+            $this->messageParams['acknowledgement']['callback']['url']      = $callbackUrl;
+            $this->messageParams['acknowledgement']['callback']['params']   = $callbackParams;
         }
 
         return $this;
