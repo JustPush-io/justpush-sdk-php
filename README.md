@@ -28,6 +28,9 @@ $response = JustPushMessage::token('REPLACE_WITH_USER_TOKEN')
     ->message('Here is a sample Message')
     ->title('Test Title')
     ->create();
+
+echo json_encode($response->result(), JSON_PRETTY_PRINT); //Result
+echo json_encode($response->responseHeaders(), JSON_PRETTY_PRINT); //Response Headers
 ````
 
 # JustPush Message
@@ -79,6 +82,10 @@ This is a basic example of creating a topic
 $response = JustPushTopic::token('REPLACE_WITH_USER_TOKEN')
     ->title('New Topic')
     ->create();
+    
+echo json_encode($response->result(), JSON_PRETTY_PRINT); //Result
+echo json_encode($response->responseHeaders(), JSON_PRETTY_PRINT); //Response Headers
+
 ````
 
 ## PUT / Update A Topic
@@ -88,6 +95,10 @@ $response = JustPushTopic::token('REPLACE_WITH_USER_TOKEN')
     ->topic('REPLACE_WITH_TOPIC_UUID')
     ->title('New Topic Title')
     ->update();
+    
+echo json_encode($response->result(), JSON_PRETTY_PRINT); //Result
+echo json_encode($response->responseHeaders(), JSON_PRETTY_PRINT); //Response Headers
+
 ````
 
 ## GET / Get a topic
@@ -96,7 +107,18 @@ This is a basic example of creating a topic
 $response = JustPushTopic::token('REPLACE_WITH_USER_TOKEN')
     ->topic('REPLACE_WITH_TOPIC_UUID')
     ->get();
+
+echo json_encode($response->result(), JSON_PRETTY_PRINT); //Result
+echo json_encode($response->responseHeaders(), JSON_PRETTY_PRINT); //Response Headers
 ````
+
+### Response Headers
+| Key                         | Value            | Description                                                                      |
+|-----------------------------|------------------|----------------------------------------------------------------------------------|
+| ```X-Limit-App-Limit```     | ```["10000"]```  | The amount of messages that you can send based on your active subscription       |
+| ```X-Limit-App-Remaining``` | ```["9895"]```   | The amount of messages you have left for the current period in your subscription |
+| ```X-Limit-App-Limit```     | ```["234512"]``` | The seconds till the monthly reset will be done.                                 |
+
 
 ## OpenApi Spec
 The package comes with an OpenAPI spec. Which can be found in the `docs` folder. [Click Here](https://github.com/JustPush-io/justpush-sdk-php/tree/docs)
