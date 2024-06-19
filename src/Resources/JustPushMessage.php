@@ -284,7 +284,7 @@ class JustPushMessage extends JustPushBase
      *
      * @return array
      */
-    public function create(): array
+    public function create(): self
     {
         try {
             $response = $this->client()->request('POST', self::ENDPOINT, [
@@ -292,7 +292,11 @@ class JustPushMessage extends JustPushBase
                 'json'    => $this->messageParams,
             ]);
 
-            return json_decode($response->getBody()->getContents(), true);
+            $this->result = json_decode($response->getBody()->getContents(), true);
+            $this->responseHeaders = $response->getHeaders();
+
+            return $this;
+
         } catch (GuzzleException $e) {
             // Handle specific Guzzle exceptions and rethrow or log as necessary
             throw new RuntimeException('Failed to create message: ' . $e->getMessage(), $e->getCode(), $e);
@@ -304,7 +308,7 @@ class JustPushMessage extends JustPushBase
      *
      * @return array
      */
-    public function get(): array
+    public function get(): self
     {
         if (empty($this->messageParams['key'])) {
             throw new InvalidArgumentException('Message key must be set before calling get.');
@@ -315,7 +319,11 @@ class JustPushMessage extends JustPushBase
                 'headers' => $this->baseHeaders(),
             ]);
 
-            return json_decode($response->getBody()->getContents(), true);
+            $this->result = json_decode($response->getBody()->getContents(), true);
+            $this->responseHeaders = $response->getHeaders();
+
+            return $this;
+
         } catch (GuzzleException $e) {
             // Handle specific Guzzle exceptions and rethrow or log as necessary
             throw new RuntimeException('Failed to get message: ' . $e->getMessage(), $e->getCode(), $e);

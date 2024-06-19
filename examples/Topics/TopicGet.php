@@ -6,14 +6,16 @@ use JustPush\Resources\JustPushTopic;
 
 require '../../vendor/autoload.php';
 
-$response = JustPushTopic::token('IggUNJlmz3ULZvH0ur2UF2yR2UAws8jU')
+$response = JustPushTopic::token('REPLACE_WITH_API_TOKEN')
     ->title('New Topic')
     ->create();
 
-echo json_encode($response, JSON_PRETTY_PRINT);
+echo json_encode($response->result(), JSON_PRETTY_PRINT);
+echo json_encode($response->responseHeaders(), JSON_PRETTY_PRINT);
 
-$getResponse = JustPushTopic::token('IggUNJlmz3ULZvH0ur2UF2yR2UAws8jU')
-    ->topic($response['uuid'])
+$getResponse = JustPushTopic::token('REPLACE_WITH_API_TOKEN')
+    ->topic($response->result()['uuid'])
     ->get();
 
-echo json_encode($getResponse, JSON_PRETTY_PRINT);
+echo json_encode($response->result(), JSON_PRETTY_PRINT);
+echo json_encode($response->responseHeaders(), JSON_PRETTY_PRINT);

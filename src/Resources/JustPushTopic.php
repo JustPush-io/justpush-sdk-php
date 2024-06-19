@@ -94,7 +94,7 @@ class JustPushTopic extends JustPushBase
      *
      * @return $this
      */
-    public function create(): array
+    public function create(): self
     {
         try {
             $response = $this->client()->request('POST', self::ENDPOINT, [
@@ -102,7 +102,11 @@ class JustPushTopic extends JustPushBase
                 'json'    => $this->topicParams,
             ]);
 
-            return json_decode($response->getBody()->getContents(), true);
+            $this->result = json_decode($response->getBody()->getContents(), true);
+            $this->responseHeaders = $response->getHeaders();
+
+            return $this;
+
         } catch (GuzzleException $e) {
             // Handle specific Guzzle exceptions and rethrow or log as necessary
             throw new RuntimeException('Failed to create topic: ' . $e->getMessage(), $e->getCode(), $e);
@@ -112,7 +116,7 @@ class JustPushTopic extends JustPushBase
     /**
      * @return array
      */
-    public function get(): array
+    public function get(): self
     {
         if (empty($this->topicUuid)) {
             throw new InvalidArgumentException('Topic token must be set before updating');
@@ -123,7 +127,11 @@ class JustPushTopic extends JustPushBase
                 'headers' => $this->baseHeaders(),
             ]);
 
-            return json_decode($response->getBody()->getContents(), true);
+            $this->result = json_decode($response->getBody()->getContents(), true);
+            $this->responseHeaders = $response->getHeaders();
+
+            return $this;
+
         } catch (GuzzleException $e) {
             // Handle specific Guzzle exceptions and rethrow or log as necessary
             throw new RuntimeException('Failed to get message: ' . $e->getMessage(), $e->getCode(), $e);
@@ -133,7 +141,7 @@ class JustPushTopic extends JustPushBase
     /**
      * @return array
      */
-    public function update(): array
+    public function update(): self
     {
         if (empty($this->topicUuid)) {
             throw new InvalidArgumentException('Topic token must be set before updating');
@@ -147,7 +155,11 @@ class JustPushTopic extends JustPushBase
                 'json'    => $this->topicParams,
             ]);
 
-            return json_decode($response->getBody()->getContents(), true);
+            $this->result = json_decode($response->getBody()->getContents(), true);
+            $this->responseHeaders = $response->getHeaders();
+
+            return $this;
+
         } catch (GuzzleException $e) {
             // Handle specific Guzzle exceptions and rethrow or log as necessary
             throw new RuntimeException('Failed to get message: ' . $e->getMessage(), $e->getCode(), $e);
