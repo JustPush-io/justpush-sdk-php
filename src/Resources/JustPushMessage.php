@@ -273,7 +273,7 @@ class JustPushMessage extends JustPushBase
         if ($callbackRequired) {
             $this->messageParams['acknowledgement']['callback']['required'] = $callbackRequired;
             $this->messageParams['acknowledgement']['callback']['url']      = $callbackUrl;
-            $this->messageParams['acknowledgement']['callback']['params']   = $callbackParams;
+            $this->messageParams['acknowledgement']['callback']['params']   = json_encode($callbackParams);
         }
 
         return $this;
