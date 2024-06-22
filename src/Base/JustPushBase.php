@@ -11,7 +11,7 @@ class JustPushBase
     /**
      * The API url.
      */
-    public const JUSTPUSH_API_URL = 'https://api.justpush.test';
+    public const JUSTPUSH_API_URL = 'https://api.justpush.io';
     public const CLIENT_VERSION   = '1.0.6';
 
     public ?array $headers = [];
