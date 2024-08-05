@@ -14,9 +14,9 @@ class JustPushBase
     public const JUSTPUSH_API_URL = 'https://api.justpush.io';
     public const CLIENT_VERSION   = '1.0.6';
 
-    public ?array $headers = [];
+    public ?array $headers         = [];
     public ?array $responseHeaders = null;
-    public ?array $result = null;
+    public ?array $result          = null;
 
     public function client(): Client
     {
@@ -40,19 +40,21 @@ class JustPushBase
         return $this->headers;
     }
 
-    public function result() : ?array {
+    public function result(): ?array
+    {
         return $this->result;
     }
 
-    public function responseHeaders() : ?array {
-
+    public function responseHeaders(): ?array
+    {
         $requiredHeaders = ['X-Limit-App-Limit', 'X-Limit-App-Remaining', 'X-Limit-App-Reset'];
 
-        foreach($this->responseHeaders as $key => $value) {
-            if(!in_array($key, $requiredHeaders)) {
+        foreach ($this->responseHeaders as $key => $value) {
+            if (!in_array($key, $requiredHeaders, true)) {
                 unset($this->responseHeaders[$key]);
             }
         }
+
         return $this->responseHeaders;
     }
 }

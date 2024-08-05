@@ -18,7 +18,7 @@ Welcome to the official PHP SDK for JustPush! This SDK allows you to easily inte
 Install the SDK via Composer:
 
 ```bash
-ccomposer require justpush/justpush-php-sdk
+composer require justpush/justpush-php-sdk
 
 ```
 ## Basic Push Message

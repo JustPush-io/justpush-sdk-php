@@ -260,15 +260,24 @@ class JustPushMessage extends JustPushBase
 
     /**
      * @param bool $requiresAcknowledgement
+     * @param bool $requiresRetry
+     * @param int $retryInterval
+     * @param int $maxRetries
      * @param bool $callbackRequired
      * @param string|null $callbackUrl
      * @param array|null $callbackParams
      *
      * @return $this
      */
-    public function acknowledge(bool $requiresAcknowledgement, bool $callbackRequired = false, ?string $callbackUrl = null, ?array $callbackParams = null): static
+    public function acknowledge(bool $requiresAcknowledgement, bool $requiresRetry, int $retryInterval, int $maxRetries, bool $callbackRequired = false, ?string $callbackUrl = null, ?array $callbackParams = null): static
     {
         $this->messageParams['requires_acknowledgement'] = $requiresAcknowledgement;
+
+        if ($requiresRetry) {
+            $this->messageParams['acknowledgement']['requires_retry'] = true;
+            $this->messageParams['acknowledgement']['retry_interval'] = $retryInterval ?? 60;
+            $this->messageParams['acknowledgement']['max_retries']    = $maxRetries ?? 10;
+        }
 
         if ($callbackRequired) {
             $this->messageParams['acknowledgement']['callback']['required'] = $callbackRequired;
@@ -292,11 +301,10 @@ class JustPushMessage extends JustPushBase
                 'json'    => $this->messageParams,
             ]);
 
-            $this->result = json_decode($response->getBody()->getContents(), true);
+            $this->result          = json_decode($response->getBody()->getContents(), true);
             $this->responseHeaders = $response->getHeaders();
 
             return $this;
-
         } catch (GuzzleException $e) {
             // Handle specific Guzzle exceptions and rethrow or log as necessary
             throw new RuntimeException('Failed to create message: ' . $e->getMessage(), $e->getCode(), $e);
@@ -319,11 +327,10 @@ class JustPushMessage extends JustPushBase
                 'headers' => $this->baseHeaders(),
             ]);
 
-            $this->result = json_decode($response->getBody()->getContents(), true);
+            $this->result          = json_decode($response->getBody()->getContents(), true);
             $this->responseHeaders = $response->getHeaders();
 
             return $this;
-
         } catch (GuzzleException $e) {
             // Handle specific Guzzle exceptions and rethrow or log as necessary
             throw new RuntimeException('Failed to get message: ' . $e->getMessage(), $e->getCode(), $e);

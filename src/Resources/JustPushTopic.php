@@ -102,11 +102,10 @@ class JustPushTopic extends JustPushBase
                 'json'    => $this->topicParams,
             ]);
 
-            $this->result = json_decode($response->getBody()->getContents(), true);
+            $this->result          = json_decode($response->getBody()->getContents(), true);
             $this->responseHeaders = $response->getHeaders();
 
             return $this;
-
         } catch (GuzzleException $e) {
             // Handle specific Guzzle exceptions and rethrow or log as necessary
             throw new RuntimeException('Failed to create topic: ' . $e->getMessage(), $e->getCode(), $e);
@@ -127,11 +126,10 @@ class JustPushTopic extends JustPushBase
                 'headers' => $this->baseHeaders(),
             ]);
 
-            $this->result = json_decode($response->getBody()->getContents(), true);
+            $this->result          = json_decode($response->getBody()->getContents(), true);
             $this->responseHeaders = $response->getHeaders();
 
             return $this;
-
         } catch (GuzzleException $e) {
             // Handle specific Guzzle exceptions and rethrow or log as necessary
             throw new RuntimeException('Failed to get message: ' . $e->getMessage(), $e->getCode(), $e);
@@ -155,11 +153,10 @@ class JustPushTopic extends JustPushBase
                 'json'    => $this->topicParams,
             ]);
 
-            $this->result = json_decode($response->getBody()->getContents(), true);
+            $this->result          = json_decode($response->getBody()->getContents(), true);
             $this->responseHeaders = $response->getHeaders();
 
             return $this;
-
         } catch (GuzzleException $e) {
             // Handle specific Guzzle exceptions and rethrow or log as necessary
             throw new RuntimeException('Failed to get message: ' . $e->getMessage(), $e->getCode(), $e);
