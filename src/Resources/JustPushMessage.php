@@ -269,7 +269,15 @@ class JustPushMessage extends JustPushBase
      *
      * @return $this
      */
-    public function acknowledge(bool $requiresAcknowledgement, bool $requiresRetry, int $retryInterval, int $maxRetries, bool $callbackRequired = false, ?string $callbackUrl = null, ?array $callbackParams = null): static
+    public function acknowledge(
+        bool $requiresAcknowledgement,
+        bool $requiresRetry = false,
+        int $retryInterval = 0,
+        int $maxRetries = 0,
+        bool $callbackRequired = false,
+        ?string $callbackUrl = null,
+        ?array $callbackParams = null
+    ): static
     {
         $this->messageParams['requires_acknowledgement'] = $requiresAcknowledgement;
 
