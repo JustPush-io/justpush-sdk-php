@@ -2,7 +2,7 @@
     "openapi": "3.0.2",
     "info": {
         "title": "JustPush",
-        "version": "1.0.11"
+        "version": "1.0.16"
     },
     "servers": [
         {
@@ -226,6 +226,15 @@
                     "acknowledgement": {
                         "type": "object",
                         "properties": {
+                            "requires_retry": {
+                                "type": "boolean"
+                            },
+                            "max_retries": {
+                                "type": "integer"
+                            },
+                            "interval": {
+                                "type": "integer"
+                            },
                             "callback": {
                                 "type": "object",
                                 "properties": {
@@ -303,7 +312,7 @@
                                     "type": "string"
                                 },
                                 "body": {
-                                    "description": "A base64 respresentation of the image",
+                                    "description": "A base64 representation of the image",
                                     "type": "string"
                                 }
                             }
