@@ -163,6 +163,25 @@ class JustPushMessage extends JustPushBase
     }
 
     /**
+     * @param string $name
+     * @param string $cta
+     * @param array $buttons
+     * @param bool $actionRequired
+     *
+     * @return $this
+     */
+    public function buttonGroup(string $name, string $cta, array $buttons, bool $actionRequired = false): static {
+        $this->messageParams['button_groups'][] = [
+            'name' => $name,
+            'cta' => $cta,
+            'actionRequired' => $actionRequired,
+            'buttons' => $buttons,
+        ];
+
+        return $this;
+    }
+
+    /**
      * @param string $sound
      *
      * @return $this
