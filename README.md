@@ -124,4 +124,5 @@ echo json_encode($response->responseHeaders(), JSON_PRETTY_PRINT); //Response He
 The package comes with an OpenAPI spec. Which can be found in the `docs` folder. [Click Here](https://github.com/JustPush-io/justpush-sdk-php/tree/docs)
 
 ## Changelog
+- 1.0.17 - Added Button Groups
 - 1.0.15 - Added retry mechanism for `acknowledgements` 
