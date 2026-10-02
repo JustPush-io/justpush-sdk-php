@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace JustPush\Exceptions;
 
-use Exception;
+use InvalidArgumentException;
 
-class JustPushValidationException extends Exception
-{
-    public function render(): void {}
-}
+/**
+ * The message or topic is invalid, caught before anything is sent.
+ */
+class JustPushValidationException extends InvalidArgumentException {}

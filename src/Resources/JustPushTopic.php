@@ -4,58 +4,47 @@ declare(strict_types=1);
 
 namespace JustPush\Resources;
 
-use GuzzleHttp\Exception\GuzzleException;
 use InvalidArgumentException;
 use JustPush\Base\JustPushBase;
+use JustPush\Exceptions\JustPushApiException;
+use JustPush\Exceptions\JustPushConnectionException;
 use JustPush\Exceptions\JustPushValidationException;
-use RuntimeException;
 
 class JustPushTopic extends JustPushBase
 {
     public const ENDPOINT = '/topics';
 
-    /**
-     * @var array|null
-     */
     private ?array $topicParams = null;
     private ?string $topicUuid  = null;
 
-    /**
-     * @param $token
-     */
     public function __construct($token)
     {
         $this->setToken($token);
-
-        return $this;
     }
 
-    /**
-     * @param string $token
-     *
-     * @return static
-     */
     public static function token(string $token = ''): static
     {
         return new static($token);
     }
 
     /**
-     * @param string|null $title
-     *
-     * @return $this
+     * The topic's title, at most 100 characters.
      */
     public function title(?string $title = null): static
     {
-        $this->topicParams['title'] = $title ?? 'Default';
+        $title ??= 'Default';
+
+        if (mb_strlen($title) > 100) {
+            throw new JustPushValidationException('A topic title can be at most 100 characters.');
+        }
+
+        $this->topicParams['title'] = $title;
 
         return $this;
     }
 
     /**
-     * @param string|null $topicUuid
-     *
-     * @return $this
+     * The topic's UUID, for get() and update().
      */
     public function topic(?string $topicUuid = null): static
     {
@@ -65,109 +54,69 @@ class JustPushTopic extends JustPushBase
     }
 
     /**
-     * @param string|null $url
-     * @param string|null $body
+     * Set the avatar from a public URL, or from base64-encoded image data in $body.
      *
-     * @throws JustPushValidationException
-     *
-     * @return $this
+     * @throws JustPushValidationException when both or neither are given
      */
     public function avatar(?string $url = null, ?string $body = null): static
     {
-        if (null !== $url && null !== $body) {
-            throw new JustPushValidationException();
+        if ((null === $url) === (null === $body)) {
+            throw new JustPushValidationException('Pass either an avatar url or a body, not both.');
         }
 
-        if (null !== $url) {
-            $this->topicParams['avatar']['external_url'] = $url;
-        }
-
-        if (null !== $body) {
-            $this->topicParams['avatar']['body'] = $body;
-        }
+        $this->topicParams['avatar'] = null !== $url ? ['external_url' => $url] : ['body' => $body];
 
         return $this;
     }
 
     /**
-     * @param string $title
+     * Create the topic. result() then holds its uuid, title, slug, avatar and api_token.
      *
-     * @return $this
+     * @throws JustPushApiException        when the API rejects the topic
+     * @throws JustPushConnectionException when the API can't be reached
      */
-    public function create(): self
+    public function create(): static
     {
-        try {
-            $response = $this->client()->request('POST', self::ENDPOINT, [
-                'headers' => $this->baseHeaders(),
-                'json'    => $this->topicParams,
-            ]);
-
-            $this->result          = json_decode($response->getBody()->getContents(), true);
-            $this->responseHeaders = $response->getHeaders();
-
-            return $this;
-        } catch (GuzzleException $e) {
-            // Handle specific Guzzle exceptions and rethrow or log as necessary
-            throw new RuntimeException('Failed to create topic: ' . $e->getMessage(), $e->getCode(), $e);
+        if (empty($this->topicParams['title'])) {
+            throw new JustPushValidationException('A topic needs a title.');
         }
+
+        return $this->send('POST', self::ENDPOINT, $this->topicParams, 'create topic');
     }
 
     /**
-     * @return array
+     * Fetch one of your topics. Set topic() first.
+     *
+     * @throws JustPushApiException        e.g. 404 when there's no topic with that UUID
+     * @throws JustPushConnectionException when the API can't be reached
      */
-    public function get(): self
+    public function get(): static
     {
-        if (empty($this->topicUuid)) {
-            throw new InvalidArgumentException('Topic token must be set before updating');
-        }
-
-        try {
-            $response = $this->client()->request('GET', self::ENDPOINT . '/' . $this->topicUuid, [
-                'headers' => $this->baseHeaders(),
-            ]);
-
-            $this->result          = json_decode($response->getBody()->getContents(), true);
-            $this->responseHeaders = $response->getHeaders();
-
-            return $this;
-        } catch (GuzzleException $e) {
-            // Handle specific Guzzle exceptions and rethrow or log as necessary
-            throw new RuntimeException('Failed to get message: ' . $e->getMessage(), $e->getCode(), $e);
-        }
+        return $this->send('GET', $this->topicPath('getting'), null, 'get topic');
     }
 
     /**
-     * @return array
+     * Rename the topic or change its avatar. Set topic() first. The default topic can't be renamed.
+     *
+     * @throws JustPushApiException        e.g. 403 when you don't own the topic
+     * @throws JustPushConnectionException when the API can't be reached
      */
-    public function update(): self
+    public function update(): static
     {
-        if (empty($this->topicUuid)) {
-            throw new InvalidArgumentException('Topic token must be set before updating');
-        }
-
-        var_dump('TopicParams: ', $this->topicParams);
-
-        try {
-            $response = $this->client()->request('PUT', self::ENDPOINT . '/' . $this->topicUuid, [
-                'headers' => $this->baseHeaders(),
-                'json'    => $this->topicParams,
-            ]);
-
-            $this->result          = json_decode($response->getBody()->getContents(), true);
-            $this->responseHeaders = $response->getHeaders();
-
-            return $this;
-        } catch (GuzzleException $e) {
-            // Handle specific Guzzle exceptions and rethrow or log as necessary
-            throw new RuntimeException('Failed to get message: ' . $e->getMessage(), $e->getCode(), $e);
-        }
+        return $this->send('PUT', $this->topicPath('updating'), $this->topicParams ?? [], 'update topic');
     }
 
-    /**
-     * @return array
-     */
     public function getTopicParams(): array
     {
-        return $this->topicParams;
+        return $this->topicParams ?? [];
+    }
+
+    private function topicPath(string $action): string
+    {
+        if (empty($this->topicUuid)) {
+            throw new InvalidArgumentException('Topic UUID must be set before ' . $action);
+        }
+
+        return self::ENDPOINT . '/' . rawurlencode($this->topicUuid);
     }
 }
